@@ -64,9 +64,14 @@ async def dice(ctx, sides: int, numDice: int):
             rolls.append(str(random.randint(1, sides)))
         await ctx.send(', '.join(rolls))
 
-@bot.command(name='secret')
+@bot.command(name='secret', help='Completely useless.')
 @commands.has_role('Admin')
 async def secret(ctx):
     await ctx.send(f'{ctx.author.name} activated the secret command!')
 
+@bot.command(name='strike', help='Manages the striking system.')
+@commands.has_role('Admin')
+async def strike(ctx, mode: str, user: discord.member, *, reason=None):
+    pass
+    
 bot.run(token)
