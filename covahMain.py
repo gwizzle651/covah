@@ -25,7 +25,7 @@ async def on_command_error(ctx, error):
         await ctx.reply("🚫 Invalid argument(s)!")
         
     elif isinstance(error, commands.MissingRequiredArgument):
-        await ctx.reply("⚠️ You are missing some required arguments(s)!")
+        await ctx.reply("⚠️ You are missing some required argument(s)!")
 
 '''
     elif isinstance(error, commands.errors.CheckFailure):
@@ -38,7 +38,8 @@ async def on_message(message):
         return
 
     if message.content.lower() == "lol":
-        await message.channel.send("i know that it is not that funny")
+        #await message.channel.send("i know that it is not that funny")
+        await message.reply('i know that it is not that funny')
 
     if message.content.lower() == "bruh":
         await message.reply('shut up loser')
