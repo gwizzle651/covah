@@ -18,15 +18,20 @@ async def on_ready():
 
 @bot.event
 async def on_command_error(ctx, error):
-    if isinstance(error, commands.errors.CheckFailure):
-        await ctx.send('You do not have the correct role for this command.')
-        
+    if isinstance(error, commands.MissingRole):
+        await ctx.reply("You don't have permission to use this command.")
+
     elif isinstance(error, commands.BadArgument):
-        await ctx.reply("🚫 Invalid argument type! Please enter a valid number.")
+        await ctx.reply("🚫 Invalid argument(s)!")
         
     elif isinstance(error, commands.MissingRequiredArgument):
-        await ctx.reply("⚠️ You are missing some required arguments!")
-        
+        await ctx.reply("⚠️ You are missing some required arguments(s)!")
+
+'''
+    elif isinstance(error, commands.errors.CheckFailure):
+        await ctx.send('You do not have the correct role for this command.')
+'''
+
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
@@ -70,8 +75,30 @@ async def secret(ctx):
     await ctx.send(f'{ctx.author.name} activated the secret command!')
 
 @bot.command(name='strike', help='Manages the striking system.')
-@commands.has_role('Admin')
-async def strike(ctx, mode: str, user: discord.member, *, reason=None):
-    pass
+@commands.has_any_role('Admin', 'Mod')
+async def strike(ctx, mode: str, user: discord.Member, *, reason=None):
+    if mode not in ['add', 'remove']:
+            await ctx.send("Invalid mode. Use 'add' to issue a strike or 'remove' to remove a strike.")
+            return
+    
+    if user.id not in user_strikes:
+        user_strikes[user.id] = 0
+    if mode == 'add':
+        user_strikes[user.id] += 1
+        await ctx.send(f"Strike added to {user.name}. Total strikes: {user_strikes[user.id]}")
+    
+        if user_strikes[user.id] >= 3:
+            await ctx.send(f"{user.name} has reached 3 strikes and will be muted by @Admin or @Mod.")
+    
+    elif mode == 'remove':
+        if user_strikes[user.id] > 0:
+            user_strikes[user.id] -= 1
+            await ctx.send(f"Strike removed from {user.name}. Total strikes: {user_strikes[user.id]}")
+        else:
+            await ctx.send(f"{user.name} has no strikes to remove.")
+    
+    if reason:
+        await ctx.send(f"Reason: {reason}")
+
     
 bot.run(token)
