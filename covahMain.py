@@ -18,6 +18,7 @@ botCommandsChannelID = 1345050469302665257
 @bot.event
 async def on_ready():
     print(f"{bot.user} has connected to discord")
+    bumpServer.start()
 
 
 @bot.event
@@ -121,7 +122,7 @@ async def strike(ctx, mode: str, user: discord.Member, *, reason=None):
 
 
 # automation
-@tasks.loop(minutes=15)
+@tasks.loop(minutes=61)
 async def bumpServer():
     channel = bot.get_channel(botCommandsChannelID)
     if channel:
