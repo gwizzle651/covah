@@ -124,8 +124,8 @@ async def bumpServer():
     await bot.wait_until_ready()
     channel = bot.get_channel(botCommandsChannelID)
     if channel:
-        await channel.send("<@&1414763923780927568>")
-        await channel.send("!d bump")
+        await channel.send("<@&1414763923780927568>"
+                           "It's time to bum the server.")
     else:
         print("Channel not found.")
 bot.run(token)
