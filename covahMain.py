@@ -48,7 +48,7 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.MissingRequiredArgument):
         await ctx.reply("⚠️ You are missing some required argument(s)!")
     elif isinstance(error, commands.errors.CheckFailure):
-        await ctx.send("You do not have the correct role for this command.")
+        await ctx.send("An error occurred for an unknown reason.")
 
 
 @bot.event
@@ -98,6 +98,46 @@ async def secret(ctx):
     await ctx.send(f"{ctx.author.name} activated the secret command!")
 
 
+@bot.command(name="clear", help="Clears a specified number of messages."
+             " from the channel it is called in.")
+@commands.has_any_role("Admin", "Mod")
+async def clear(ctx, amount: int):
+    if amount < 101:
+        await ctx.channel.purge(limit=amount + 1)
+        await ctx.send(f"Cleared {amount} messages.")
+    else:
+        await ctx.send("You can only clear up to 100 messages at a time.")
+
+
+# make sure to edit the rulesMessage variable to fit server's rules
+@bot.command(name='rules', help="Posts the server rules"
+             " in the current channel.")
+async def rules(ctx):
+    rulesMessage = (
+        "1. Don't spam. (This includes reactions & forum posts)\n"
+        "2. No NSFW content. (Or otherwise inappropriate content.)\n"
+        "3. Stay on topic within specific channels.\n"
+        "4. Contact admins if someone is breaking the rules.\n"
+        "5. Keep vulgar language to a minimum.\n"
+        "6. Be honourable, and remember what happens to your reputation"
+        " when you aren't.\n"
+        "7. Use English as your primary language. (Other languages"
+        " are allowed, just don't use them all the time.)\n"
+        "8. Don't try to force anyone to touch gr*ss, get a j*b,"
+        " or take a sh*wer/b*th.\n"
+        "9. No advertising other websites, discord servers, products,"
+        " or any other form of service, object or similar"
+        " except for in the dedicated channel.\n"
+        "10. No “brainrot” content is allowed. (Except for the one emoji:"
+        " :onlyinohio: and chill guy)\n"
+        "11. Do not post PII of others. (Unless given explicit"
+        " permission by that person.)\n"
+        "12. Do not ping everyone (except for mods obv) and only use"
+        " role pings when appropriate."
+    )
+    await ctx.send(rulesMessage)
+
+
 @bot.command(name="strike", help="Manages the striking system.")
 @commands.has_any_role("Admin", "Mod")
 async def strike(ctx, mode: str, user: discord.Member, *, reason=None):
@@ -140,7 +180,7 @@ async def bumpServer():
     channel = bot.get_channel(botCommandsChannelID)
     if channel:
         await channel.send("<@&1414763923780927568>"
-                           "It's time to bump the server.")
+                           " It's time to bump the server.")
     else:
-        print("Channel not found.")
+        print(f"Channel not found: {botCommandsChannelID}")
 bot.run(token)
