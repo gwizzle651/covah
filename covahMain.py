@@ -31,11 +31,8 @@ async def on_command_error(ctx, error):
 
     elif isinstance(error, commands.MissingRequiredArgument):
         await ctx.reply("⚠️ You are missing some required argument(s)!")
-
-'''
     elif isinstance(error, commands.errors.CheckFailure):
         await ctx.send('You do not have the correct role for this command.')
-'''
 
 
 @bot.event
@@ -122,11 +119,13 @@ async def strike(ctx, mode: str, user: discord.Member, *, reason=None):
 
 
 # automation
-@tasks.loop(minutes=61)
+@tasks.loop(hours=1)
 async def bumpServer():
+    await bot.wait_until_ready()
     channel = bot.get_channel(botCommandsChannelID)
     if channel:
-        await channel.send("/bump")
+        await channel.send("<@&1414763923780927568>")
+        await channel.send("!d bump")
     else:
         print("Channel not found.")
 bot.run(token)
