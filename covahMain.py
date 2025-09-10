@@ -94,7 +94,7 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
-    if "lol" or "bruh" in message.content.lower():
+    if "lol" in message.content.lower() or "bruh" in message.content.lower():
         await message.reply(random.choice(insults))
 
     if "🧽" in message.content:
