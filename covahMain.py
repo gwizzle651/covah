@@ -34,7 +34,7 @@ userStrikes = loadStrikes()
 @bot.event
 async def on_ready():
     print(f"{bot.user} has connected to discord")
-    bumpServer.start()
+    # bumpServer.start()
 
 
 @bot.event
@@ -71,6 +71,17 @@ async def on_message(message):
         "stupid br*t",
         "dumb monkey"
     ]
+    robotInsults = [
+        "clanker",
+        "bucket of bolts",
+        "overgrown toaster",
+        "hunk of junk",
+        "tin skin",
+        "wire back",
+        "rust bucket",
+        "scrap metal",
+        "cogsucker"
+    ]
 
     if message.author == bot.user:
         return
@@ -78,8 +89,10 @@ async def on_message(message):
     if "🧽" in message.content:
         await message.reply("S P O N G U E")
 
-    if "clanker" in message.content.lower():
-        await message.reply(random.choice(humanInsults))
+    for insult in robotInsults:
+        if insult in message.content.lower():
+            await message.reply(random.choice(humanInsults))
+            break
     await bot.process_commands(message)
 
 
@@ -129,7 +142,7 @@ async def clear(ctx, amount: int):
              " in the current channel.")
 async def rules(ctx):
     rulesMessage = (
-        "1. Don't spam. (This includes reactions & forum posts)\n"
+        "```1. Don't spam. (This includes reactions & forum posts)\n"
         "2. No NSFW content. (Or otherwise inappropriate content.)\n"
         "3. Stay on topic within specific channels.\n"
         "4. Contact admins if someone is breaking the rules.\n"
@@ -148,12 +161,12 @@ async def rules(ctx):
         "11. Do not post PII of others. (Unless given explicit"
         " permission by that person.)\n"
         "12. Do not ping everyone (except for mods obv) and only use"
-        " role pings when appropriate."
+        " role pings when appropriate.```"
     )
     await ctx.send(rulesMessage)
 
 
-@bot.command(name="strike", help="Manages the striking system.")
+@bot.command(name="strike", help="Manages strikes.")
 @commands.has_any_role("Admin", "Mod")
 async def strike(ctx, mode: str, user: discord.Member, *, reason=None):
     if mode not in ["add", "remove"]:
@@ -163,7 +176,7 @@ async def strike(ctx, mode: str, user: discord.Member, *, reason=None):
 
     if user.id not in userStrikes:
         userStrikes[user.id] = 0
-    if mode == 'add':
+    if mode.lower() == 'add':
         userStrikes[user.id] += 1
         await ctx.send(f"Strike added to {user.name}."
                        "Total strikes: {userStrikes[user.id]}")
@@ -174,7 +187,7 @@ async def strike(ctx, mode: str, user: discord.Member, *, reason=None):
                            " <@&1252708314157023303> or"
                            " <@&1252703138809380874> accordingly.")
 
-    elif mode == 'remove':
+    elif mode.lower() == 'remove':
         if userStrikes[user.id] > 0:
             userStrikes[user.id] -= 1
             await ctx.send(f"Strike removed from {user.name}."
