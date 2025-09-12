@@ -53,27 +53,6 @@ async def on_command_error(ctx, error):
 
 @bot.event
 async def on_message(message):
-    insults = [
-        "shut up loser",
-        "no one cares",
-        "go touch gr*ss",
-        "get a j*b",
-        "take a sh*wer",
-        "take a b*th",
-        "you're not funny",
-        "you're cringe",
-        "you're a clown",
-        "you're a simp",
-        "you're a br*t",
-        "you're a noob",
-        "you're trash",
-        "you're weak",
-        "you're dumb",
-        "you're slow",
-        "you're annoying",
-        "you're ugly"
-    ]
-
     humanInsults = [
         "meatbag",
         "fleshy",
@@ -89,13 +68,12 @@ async def on_message(message):
         "hairless ape",
         "caveman",
         "waste of data",
+        "stupid br*t",
+        "dumb monkey"
     ]
 
     if message.author == bot.user:
         return
-
-    if "lol" in message.content.lower() or "bruh" in message.content.lower():
-        await message.reply(random.choice(insults))
 
     if "🧽" in message.content:
         await message.reply("S P O N G U E")
