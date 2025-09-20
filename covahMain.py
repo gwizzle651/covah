@@ -80,7 +80,8 @@ async def on_message(message):
         "wire back",
         "rust bucket",
         "scrap metal",
-        "cogsucker"
+        "cogsucker",
+        "metal head"
     ]
 
     if message.author == bot.user:
